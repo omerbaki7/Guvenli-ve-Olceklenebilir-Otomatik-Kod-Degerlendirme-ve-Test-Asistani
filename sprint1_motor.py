@@ -47,11 +47,11 @@ def run_python_code(student_code_str, input_str, expected_output_str, timeout_se
         )
         
         # 3. Hazırlanan tar arşivini container içine kopyala
-        container.put_archive(path='/app', data=tar_stream)
+        container.put_archive(path='/tmp', data=tar_stream)
 
         # 4. Kodu container içinde çalıştır (exec_run)
         #    Linux 'timeout' komutunu kullanarak zaman aşımını yönet
-        command_to_run = f"timeout {timeout_sec} python /app/main.py < /app/input.txt"
+        command_to_run = f"timeout {timeout_sec} python /tmp/main.py < /tmp/input.txt"
         
         # Komutu shell içinde çalıştır (/bin/sh -c ...)
         exec_result = container.exec_run(cmd=["/bin/sh", "-c", command_to_run], demux=True)
